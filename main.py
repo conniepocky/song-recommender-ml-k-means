@@ -36,11 +36,25 @@ def optimise_kmeans(df, k_range):
     plt.grid(True)
     plt.show()
 
-#optimise_kmeans(df, 10) 4 clusters
+#optimise_kmeans(df, 10) 
 
-kmeans = KMeans(n_clusters=4, n_init="auto")
+kmeans = KMeans(n_clusters=3, n_init="auto")
 
 kmeans.fit(df)
 
 df["cluster"] = kmeans.labels_
 data["cluster"] = kmeans.labels_
+
+#pca 
+
+pca = PCA(n_components=2)
+df_pca = pca.fit_transform(df.drop("cluster", axis=1))
+
+df["pca1"] = df_pca[:, 0]
+df["pca2"] = df_pca[:, 1]
+
+plt.scatter(df["pca1"], df["pca2"], c=df["cluster"], cmap="viridis")
+plt.xlabel("PCA1")
+plt.ylabel("PCA2")
+plt.title("KMeans Clustering")
+plt.show()
