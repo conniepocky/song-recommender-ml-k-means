@@ -38,7 +38,7 @@ def optimise_kmeans(df, k_range):
 
 #optimise_kmeans(df, 10) 
 
-kmeans = KMeans(n_clusters=3, n_init="auto")
+kmeans = KMeans(n_clusters=4, n_init="auto")
 
 kmeans.fit(df)
 
@@ -58,3 +58,25 @@ plt.xlabel("PCA1")
 plt.ylabel("PCA2")
 plt.title("KMeans Clustering")
 plt.show()
+
+# recommender
+
+def find_track_index(track_name):
+    try:
+        ind = data[data["Track"] == track_name].index[0]
+        return ind
+    except IndexError:
+        return None
+    
+def recommend(track_name):
+    track_ind = find_track_index(track_name)
+    
+    track_cluster = data.loc[track_ind]["cluster"]
+
+    filter = (data["cluster"] == track_cluster)
+    filtered_df = data[filter]
+
+    for i in range(5):
+        recommendation = filtered_df.sample()
+
+        print(recommendation.iloc[0]["Track"] + " by " + recommendation.iloc[0]["Artist"])
