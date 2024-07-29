@@ -38,7 +38,7 @@ def optimise_kmeans(df, k_range):
 
 #optimise_kmeans(df, 10) 
 
-kmeans = KMeans(n_clusters=4, n_init="auto")
+kmeans = KMeans(n_clusters=3, n_init="auto")
 
 kmeans.fit(df)
 
@@ -47,17 +47,17 @@ data["cluster"] = kmeans.labels_
 
 #pca 
 
-pca = PCA(n_components=2)
-df_pca = pca.fit_transform(df.drop("cluster", axis=1))
+# pca = PCA(n_components=2)
+# df_pca = pca.fit_transform(df.drop("cluster", axis=1))
 
-df["pca1"] = df_pca[:, 0]
-df["pca2"] = df_pca[:, 1]
+# df["pca1"] = df_pca[:, 0]
+# df["pca2"] = df_pca[:, 1]
 
-plt.scatter(df["pca1"], df["pca2"], c=df["cluster"], cmap="viridis")
-plt.xlabel("PCA1")
-plt.ylabel("PCA2")
-plt.title("KMeans Clustering")
-plt.show()
+# plt.scatter(df["pca1"], df["pca2"], c=df["cluster"], cmap="viridis")
+# plt.xlabel("PCA1")
+# plt.ylabel("PCA2")
+# plt.title("KMeans Clustering")
+# plt.show()
 
 # recommender
 
@@ -76,7 +76,11 @@ def recommend(track_name):
     filter = (data["cluster"] == track_cluster)
     filtered_df = data[filter]
 
+    songs = []
+
     for i in range(5):
         recommendation = filtered_df.sample()
 
-        print(recommendation.iloc[0]["Track"] + " by " + recommendation.iloc[0]["Artist"])
+        songs.append(recommendation.iloc[0]["Track"] + " by " + recommendation.iloc[0]["Artist"])
+
+    return songs

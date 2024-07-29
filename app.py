@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from main import recommend
 
 app = Flask(__name__)
@@ -10,7 +10,9 @@ def hello_world():
 
 @app.route('/<name>')
 def hello_name(name):
-   return 'Hello %s!' % name
+   songs = recommend(name)
+   print(songs)
+   return render_template("index.html", songs=songs)
 
 if __name__ == '__main__':
    app.run()
