@@ -14,29 +14,6 @@ df = data.drop(columns=cols_to_drop, axis=1)
 
 numerical_cols = ["year", "danceability", "duration_ms", "energy", "explicit", "instrumentalness", "liveness", "loudness", "popularity", "speechiness", "tempo", "valence"]
 df[numerical_cols] = (df[numerical_cols] - df[numerical_cols].min()) / (df[numerical_cols].max() - df[numerical_cols].min())
-
-def optimise_kmeans(df, k_range):
-    distortions = []
-    means = []
-    
-    for k in range(1, k_range+1):
-        kmeans = KMeans(n_clusters=k, n_init=k_range)
-
-        kmeans.fit(df)
-
-        distortions.append(kmeans.inertia_)
-        means.append(k)
-    
-    #elbow plot
-
-    plt.plot(means, distortions, 'o-')
-
-    plt.xlabel('Clusters')
-    plt.ylabel('Inertia')
-    plt.title('The Elbow Method showing the optimal k')
-    plt.grid(True)
-    plt.show()
-
 kmeans = KMeans(n_clusters=8, n_init="auto")
 
 kmeans.fit(df)
@@ -46,17 +23,17 @@ data["cluster"] = kmeans.labels_
 
 #pca 
 
-pca = PCA(n_components=2)
-df_pca = pca.fit_transform(df.drop("cluster", axis=1))
+# pca = PCA(n_components=2)
+# df_pca = pca.fit_transform(df.drop("cluster", axis=1))
 
-df["pca1"] = df_pca[:, 0]
-df["pca2"] = df_pca[:, 1]
+# df["pca1"] = df_pca[:, 0]
+# df["pca2"] = df_pca[:, 1]
 
-plt.scatter(df["pca1"], df["pca2"], c=df["cluster"], cmap="viridis")
-plt.xlabel("PCA1")
-plt.ylabel("PCA2")
-plt.title("KMeans Clustering")
-plt.show()
+# plt.scatter(df["pca1"], df["pca2"], c=df["cluster"], cmap="viridis")
+# plt.xlabel("PCA1")
+# plt.ylabel("PCA2")
+# plt.title("KMeans Clustering")
+# plt.show()
 
 # recommender
 
